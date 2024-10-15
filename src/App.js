@@ -1,20 +1,6 @@
-// import React from "react";
-// import './Chatbot';
-// import Chatbot from "./Chatbot";
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <h1>Geminino Chatbot</h1>
-//       <Chatbot />
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import './App.css';
 import Question from "./Question";
 import Answer from "./Answer";
 
