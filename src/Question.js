@@ -14,15 +14,16 @@ const Question = ({ setQuestion, setAnswer }) => {
 
   // 質問番号に対応する質問文
   const questionTexts = {
-    "1": "今日は何月何日ですか？",
-    "2": "天気はどうですか？",
-    "3": "今の時間は何時ですか？",
-    "4": "あなたの好きな食べ物は何ですか？",
-    "5": "最近のニュースを教えてください。",
-    "6": "おすすめの本は何ですか？",
-    "7": "今住んでいる場所の特徴を教えてください。",
-    "8": "何か趣味はありますか？",
-    "9": "最近行った旅行先はどこですか？",
+    "0": "アップルバナナついて教えてください。",
+    "1": "マルエスファームについて教えてください。",
+    "2": "アップルバナナの美味しい食べ方について教えてください。",
+    "3": "アップルバナナついて教えてください。",
+    "4": "マルエスファームについて教えてください。",
+    "5": "キッチンカーについて教えてください。",
+    "6": "アップルバナナを育てる上でこだわりはありますか？",
+    "7": "アップルバナナの美味しい食べ方を教えてください。",
+    "8": "マルエスファームではアップルバナナ以外に何を栽培していますか？",
+    "9": "台風の多い沖縄ではどのような備えをしますか？",
   };
 
   // Gemini APIに質問を送信する関数
@@ -92,15 +93,16 @@ const Question = ({ setQuestion, setAnswer }) => {
         <div className="question-options">
           <label>質問したいことを選んでください</label>
           <select value={selectedQuestion} onChange={(e) => setSelectedQuestion(e.target.value)}>
-            <option value="1">1. 今日は何月何日ですか？</option>
-            <option value="2">2. 天気はどうですか？</option>
-            <option value="3">3. 今の時間は何時ですか？</option>
-            <option value="4">4. あなたの好きな食べ物は何ですか？</option>
-            <option value="5">5. 最近のニュースを教えてください。</option>
-            <option value="6">6. おすすめの本は何ですか？</option>
-            <option value="7">7. 今住んでいる場所の特徴を教えてください。</option>
-            <option value="8">8. 何か趣味はありますか？</option>
-            <option value="9">9. 最近行った旅行先はどこですか？</option>
+            <option value="0">0. アップルバナナついて教えてください。</option>
+            <option value="1">1. マルエスファームについて教えてください。</option>
+            <option value="2">2. アップルバナナの美味しい食べ方について教えてください。</option>
+            <option value="3">3. アップルバナナついて教えてください。</option>
+            <option value="4">4. マルエスファームについて教えてください。</option>
+            <option value="5">5. キッチンカーについて教えてください。</option>
+            <option value="6">6. アップルバナナを育てる上でこだわりはありますか？</option>
+            <option value="7">7. アップルバナナの美味しい食べ方を教えてください。</option>
+            <option value="8">8. マルエスファームではアップルバナナ以外に何を栽培していますか？</option>
+            <option value="9">9. 台風の多い沖縄ではどのような備えをしますか？</option>
             <option value="10">自由入力</option>
           </select>
         </div>
