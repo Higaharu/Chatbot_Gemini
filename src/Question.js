@@ -10,7 +10,7 @@ const Question = ({ setQuestion, setAnswer }) => {
   const [isWaiting, setIsWaiting] = useState(false); // APIからの応答を待機中かどうかの状態
   const navigate = useNavigate(); // 画面遷移のためのフック
 
-  const API_KEY = '';  // APIキーをここに追加してください
+  const API_KEY = 'AIzaSyBdcqNOKnfMC5Mxc7aMJbWe4uNeqlZdQQE';  // APIキーをここに追加してください
 
   // 質問番号に対応する質問文
   const questionTexts = {
