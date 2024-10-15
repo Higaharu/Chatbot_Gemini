@@ -4,11 +4,26 @@ import axios from "axios";
 
 const Question = ({ setQuestion, setAnswer }) => {
   const [inputValue, setInputValue] = useState(""); // 入力された質問
-  const [selectedOption, setSelectedOption] = useState(""); // 質問の選択肢
+  const [selectedResponder, setSelectedResponder] = useState("ロボット"); // 回答者
+  const [selectedExplanation, setSelectedExplanation] = useState("おとな向け"); // 説明の仕方
+  const [selectedQuestion, setSelectedQuestion] = useState("1"); // 選択された質問
   const [isWaiting, setIsWaiting] = useState(false); // APIからの応答を待機中かどうかの状態
   const navigate = useNavigate(); // 画面遷移のためのフック
 
-  const API_KEY = ''; // APIキーをここに追加してください
+  const API_KEY = '';  // APIキーをここに追加してください
+
+  // 質問番号に対応する質問文
+  const questionTexts = {
+    "1": "今日は何月何日ですか？",
+    "2": "天気はどうですか？",
+    "3": "今の時間は何時ですか？",
+    "4": "あなたの好きな食べ物は何ですか？",
+    "5": "最近のニュースを教えてください。",
+    "6": "おすすめの本は何ですか？",
+    "7": "今住んでいる場所の特徴を教えてください。",
+    "8": "何か趣味はありますか？",
+    "9": "最近行った旅行先はどこですか？",
+  };
 
   // Gemini APIに質問を送信する関数
   const sendMessageToAPI = async (message) => {
@@ -40,18 +55,18 @@ const Question = ({ setQuestion, setAnswer }) => {
     }
   };
 
-  // 質問が選択された場合に入力フィールドを表示
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
-
   // フォーム送信時の処理
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputValue.trim() === "") return;
+
+    // 自由入力か選択された質問文かを決定
+    const questionText = selectedQuestion === "10" ? inputValue : questionTexts[selectedQuestion];
+
+    // プロンプトメッセージを生成
+    const promptMessage = `あなたは"${selectedResponder}"です。\n"${selectedExplanation}に"説明してください。\n"${questionText}"`;
 
     // 質問をAPIに送信
-    sendMessageToAPI(inputValue);
+    sendMessageToAPI(promptMessage);
   };
 
   return (
@@ -60,7 +75,7 @@ const Question = ({ setQuestion, setAnswer }) => {
       <form onSubmit={handleSubmit} className="input-form">
         <div className="question-selection">
           <label>回答者を選んでください</label>
-          <select>
+          <select value={selectedResponder} onChange={(e) => setSelectedResponder(e.target.value)}>
             <option value="荘司さん">荘司さん</option>
             <option value="ロボット">ロボット</option>
           </select>
@@ -68,7 +83,7 @@ const Question = ({ setQuestion, setAnswer }) => {
 
         <div className="explanation-selection">
           <label>回答の説明の仕方を選べます</label>
-          <select>
+          <select value={selectedExplanation} onChange={(e) => setSelectedExplanation(e.target.value)}>
             <option value="おとな向け">おとな向け</option>
             <option value="こども向け">こども向け</option>
           </select>
@@ -76,21 +91,21 @@ const Question = ({ setQuestion, setAnswer }) => {
 
         <div className="question-options">
           <label>質問したいことを選んでください</label>
-          <select onChange={handleOptionChange}>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
+          <select value={selectedQuestion} onChange={(e) => setSelectedQuestion(e.target.value)}>
+            <option value="1">1. 今日は何月何日ですか？</option>
+            <option value="2">2. 天気はどうですか？</option>
+            <option value="3">3. 今の時間は何時ですか？</option>
+            <option value="4">4. あなたの好きな食べ物は何ですか？</option>
+            <option value="5">5. 最近のニュースを教えてください。</option>
+            <option value="6">6. おすすめの本は何ですか？</option>
+            <option value="7">7. 今住んでいる場所の特徴を教えてください。</option>
+            <option value="8">8. 何か趣味はありますか？</option>
+            <option value="9">9. 最近行った旅行先はどこですか？</option>
             <option value="10">自由入力</option>
           </select>
         </div>
 
-        {selectedOption === "10" && (
+        {selectedQuestion === "10" && (
           <div className="input-section">
             <label>質問したいことを入力してください</label>
             <input
