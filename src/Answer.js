@@ -6,12 +6,9 @@ const Answer = ({ question, answer }) => {
 
   return (
     <div className="answer-container">
-      <h1>Geminiの回答</h1>
-      <div className="question">
-        <strong>あなたの質問: </strong> {question}
-      </div>
+      <h1>回答画面</h1>
       <div className="answer">
-        <strong>Geminiの回答: </strong> {answer}
+        <strong>回答: </strong> {answer}
       </div>
       <button onClick={() => navigate("/")}>戻る</button> {/* 戻るボタン */}
     </div>
