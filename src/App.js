@@ -10,16 +10,18 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={<Question setQuestion={setQuestion} setAnswer={setAnswer} />}
-        />
-        <Route
-          path="/answer"
-          element={<Answer question={question} answer={answer} />}
-        />
-      </Routes>
+      <div className="app-container">
+        <Routes>
+          <Route
+            path="/"
+            element={<Question setQuestion={setQuestion} setAnswer={setAnswer} />}
+          />
+          <Route
+            path="/answer"
+            element={<Answer question={question} answer={answer} />}
+          />
+        </Routes>
+      </div>
     </Router>
   );
 }
