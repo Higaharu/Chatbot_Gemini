@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Question from "./Question";
 import Answer from "./Answer";
+import './App.css';
 
-function App() {
-  const [question, setQuestion] = useState(""); // ユーザーの質問を保存
-  const [answer, setAnswer] = useState(""); // Geminiの回答を保存
+const App = () => {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [responder, setResponder] = useState("ロボット");
 
   return (
     <Router>
@@ -14,16 +15,28 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Question setQuestion={setQuestion} setAnswer={setAnswer} />}
+            element={
+              <Question
+                setQuestion={setQuestion}
+                setAnswer={setAnswer}
+                setResponder={setResponder}
+              />
+            }
           />
           <Route
             path="/answer"
-            element={<Answer question={question} answer={answer} />}
+            element={
+              <Answer
+                question={question}
+                answer={answer}
+                responder={responder}
+              />
+            }
           />
         </Routes>
       </div>
     </Router>
   );
-}
+};
 
 export default App;
