@@ -6,7 +6,10 @@ const Answer = ({ question, answer }) => {
 
   return (
     <div className="answer-container">
-      <h1>回答画面</h1>
+      <h1>回答</h1>
+      <div className="question">
+        <strong>質問: </strong> {question}
+      </div>
       <div className="answer">
         <strong>回答: </strong> {answer}
       </div>
