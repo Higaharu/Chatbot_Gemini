@@ -64,7 +64,7 @@ const Question = ({ setQuestion, setAnswer, setResponder}) => {
 
   return (
     <div className="question-container">
-      <div className={`icon ${selectedResponder === 'ロボット' ? 'icon-robot' : 'icon-shoji'}`} />
+      <div className={`icon ${selectedResponder === 'ロボット' ? 'icon-robot' : 'icon-soushi'}`} />
       <h1>質問</h1>
       <form onSubmit={handleSubmit} className="input-form">
         <div className="question-selection">
