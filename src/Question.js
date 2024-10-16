@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import './App.css';
 
-const Question = ({ setQuestion, setAnswer }) => {
-  const [inputValue, setInputValue] = useState(""); // 入力された質問
-  const [selectedResponder, setSelectedResponder] = useState("ロボット"); // 回答者
-  const [selectedExplanation, setSelectedExplanation] = useState("おとな向け"); // 説明の仕方
-  const [selectedQuestion, setSelectedQuestion] = useState("1"); // 選択された質問
-  const [isWaiting, setIsWaiting] = useState(false); // APIからの応答を待機中かどうかの状態
-  const navigate = useNavigate(); // 画面遷移のためのフック
+const Question = ({ setQuestion, setAnswer, setResponder}) => {
+  const [inputValue, setInputValue] = useState("");
+  const [selectedResponder, setSelectedResponderState] = useState("ロボット");
+  const [selectedExplanation, setSelectedExplanation] = useState("おとな向け");
+  const [selectedQuestion, setSelectedQuestion] = useState("0");
+  const [isWaiting, setIsWaiting] = useState(false);
+  const navigate = useNavigate();
 
-  const API_KEY = '';  // APIキーをここに追加してください
+  const API_KEY = ''; // APIキーをここに追加してください
 
-  // 質問番号に対応する質問文
   const questionTexts = {
     "0": "アップルバナナついて教えてください。",
     "1": "マルエスファームについて教えてください。",
@@ -26,7 +26,6 @@ const Question = ({ setQuestion, setAnswer }) => {
     "9": "台風の多い沖縄ではどのような備えをしますか？",
   };
 
-  // Gemini APIに質問を送信する関数
   const sendMessageToAPI = async (message) => {
     setIsWaiting(true);
     try {
@@ -36,55 +35,50 @@ const Question = ({ setQuestion, setAnswer }) => {
           contents: [{ parts: [{ text: message }] }]
         },
         {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
         }
       );
-      
-      // Geminiの回答をセットし、画面遷移
-      const botAnswer = response.data.candidates[0].content.parts[0].text;
-      setQuestion(message); // 質問をセット
-      setAnswer(botAnswer); // 回答をセット
-      navigate("/answer"); // 回答画面に遷移
+
+      let botAnswer = response.data.candidates[0].content.parts[0].text;
+      botAnswer = botAnswer.replace(/\*\*/g, "").replace(/\*/g, "");
+      setQuestion(message);
+      setAnswer(botAnswer);
+      setResponder(selectedResponder);
+      navigate("/answer");
     } catch (error) {
       console.error("APIリクエストエラー: ", error);
       setAnswer("エラーが発生しました。もう一度試してください。");
-      navigate("/answer"); // エラー時でも遷移
+      setResponder(selectedResponder);
+      navigate("/answer");
     } finally {
       setIsWaiting(false);
     }
   };
 
-  // フォーム送信時の処理
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // 自由入力か選択された質問文かを決定
     const questionText = selectedQuestion === "10" ? inputValue : questionTexts[selectedQuestion];
-
-    // プロンプトメッセージを生成
-    const promptMessage = `あなたは"${selectedResponder}"です。\n"${selectedExplanation}に"説明してください。\n"${questionText}"`;
-
-    // 質問をAPIに送信
+    const promptMessage = `あなたは"${selectedResponder}"です。\n"${selectedExplanation}"に説明してください。\n"${questionText}"`;
     sendMessageToAPI(promptMessage);
   };
 
   return (
     <div className="question-container">
-      <h1>質問画面</h1>
+      <div className={`icon ${selectedResponder === 'ロボット' ? 'icon-robot' : 'icon-shoji'}`} />
+      <h1>質問</h1>
       <form onSubmit={handleSubmit} className="input-form">
         <div className="question-selection">
           <label>回答者を選んでください</label>
-          <select value={selectedResponder} onChange={(e) => setSelectedResponder(e.target.value)}>
-            <option value="荘司さん">荘司さん</option>
+          <select value={selectedResponder} onChange={(e) => setSelectedResponderState(e.target.value)}>
             <option value="ロボット">ロボット</option>
+            <option value="荘司さん">荘司さん</option>
           </select>
         </div>
 
         <div className="explanation-selection">
           <label>回答の説明の仕方を選べます</label>
           <select value={selectedExplanation} onChange={(e) => setSelectedExplanation(e.target.value)}>
+            
             <option value="おとな向け">おとな向け</option>
             <option value="こども向け">こども向け</option>
           </select>
@@ -93,6 +87,7 @@ const Question = ({ setQuestion, setAnswer }) => {
         <div className="question-options">
           <label>質問したいことを選んでください</label>
           <select value={selectedQuestion} onChange={(e) => setSelectedQuestion(e.target.value)}>
+
             <option value="0">0. アップルバナナついて教えてください。</option>
             <option value="1">1. マルエスファームについて教えてください。</option>
             <option value="2">2. アップルバナナの美味しい食べ方について教えてください。</option>
@@ -114,14 +109,14 @@ const Question = ({ setQuestion, setAnswer }) => {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="質問を入力してください..."
+              placeholder="入力してください。"
               disabled={isWaiting}
             />
           </div>
         )}
 
         <button type="submit" disabled={isWaiting}>
-          {isWaiting ? "待機中..." : "送信"}
+          {isWaiting ? "待機中..." : "質問する"}
         </button>
       </form>
     </div>
